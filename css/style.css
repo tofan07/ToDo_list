@@ -23,9 +23,10 @@ img {
 .header__wrapper {
   width: 90%;
   margin: 0 auto;
-  padding: 20px 0;
+  padding: 30px 0;
   display: flex;
   justify-content: space-between;
+  align-items: center;
 }
 
 .header-logo {
@@ -71,14 +72,14 @@ img {
 }
 
 .header-form__wrapper {
-  flex-basis: 30%;
+  flex-basis: 33%;
 }
 
 .header-form__input {
   font-family: sans-serif;
   font-size: 18px;
   width: 100%;
-  padding: 15px 20px;
+  padding: 15px 90px 15px 20px;
   border-radius: 10px;
   border: none;
   color: #333333;
@@ -112,7 +113,7 @@ img {
 }
 
 .header-calendar {
-  flex-basis: 37%;
+  flex-basis: 40%;
   font-family: sans-serif;
   font-size: 1.5rem;
   margin: 0;
@@ -161,7 +162,7 @@ img {
   flex-basis: 48%;
   border: 2px solid #b0b0b0;
   border-radius: 10px;
-  padding: 20px 30px;
+  padding: 20px 20px;
 }
 
 .todo-left__title,
@@ -193,7 +194,7 @@ img {
   position: relative;
   width: 100%;
   border-radius: 10px;
-  padding: 15px 20px;
+  padding: 15px 90px 15px 20px;
   margin-bottom: 10px;
   background-color: #0A223D;
   color: #ffffff;
@@ -230,7 +231,6 @@ img {
     max-width: 300px;
     flex-basis: 25%;
     text-align: right;
-
   }
 
   .header-logo {
@@ -286,8 +286,6 @@ img {
     align-items: center;
     height: 30px;
   }
-
-
 
   .todo__wrapper {
     flex-direction: column;

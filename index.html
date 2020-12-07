@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Список дел</title>
   <link rel="stylesheet" href="./css/style.css">
+  <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
 </head>
 <body>
   <header class="header">
@@ -18,7 +19,7 @@
         <h1 class="header__title">adding new <span class="header-title__word">tasks</span></h1>
         <form action="#" class="header-form">
           <input type="text" placeholder="write a task" class="header-form__input">
-          <button type="submit" class="header-form__button">Add</button>
+          <button class="header-form__button">Add</button>
         </form>
       </div>
       <!-- /.header-form__wrapper -->
@@ -36,23 +37,13 @@
           <div class="todo-left">
             <h2 class="todo-left__title">tasks <span class="word--red">in process:</span></h2>
             <p class="todo-left__text">You have not tasks</p>
-            <ul class="list todo-left-list">
-              <!-- <li class="list__item todo-left-list__item">Задача №1
-                <a href="#"><img class="checked todo-left__checked" src="./images/check.svg" alt=""></a>
-                <a href="#"><img class="delete todo-right__delete" src="./images/delete.svg" alt=""></a>
-              </li> -->
-            </ul>
+            <ul class="list todo-left-list"></ul>
           </div>
           <!-- /.todo-left -->
           <div class="todo-right">
             <h2 class="todo-right__title"><span class="word--red">completed</span> tasks:</h2>
             <p class="todo-right__text">You have not completed task</p>
-            <ul class="todo-right-list">
-              <!-- <li class="todo-right-list__item">Задача №1
-                <a href="#"><img class="checked todo-right__checked" src="./images/check.svg" alt=""></a>
-                <a href="#"><img class="delete todo-right__delete" src="./images/delete.svg" alt=""></a>
-              </li> -->
-            </ul>
+            <ul class="todo-right-list"></ul>
           </div>
           <!-- /.todo-right -->
         </div>

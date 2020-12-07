@@ -1,6 +1,6 @@
 'use strict';
 
-const key = 'Список задач';
+const key = 'Tasks list';
 
 const getTodoData = key => localStorage.getItem(key) ?
 	JSON.parse(localStorage.getItem(key)) : [];
@@ -51,7 +51,12 @@ const render = function() {
 				const index = todoData.findIndex(elem =>
 					elem.id === +li.id);
 				todoData.splice(index, 1);
+
 			updateTodoData(key, todoData);
+			
+			if (todoData.length === 0) {
+				localStorage.removeItem(key);
+			}
 			render();
 		});
 	});

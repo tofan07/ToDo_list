@@ -13,6 +13,8 @@ const dateWrap = document.querySelector('.header-calendar'),
 	headerInput = document.querySelector('.header-form__input'),
 	todoList = document.querySelector('.todo-left-list'),
 	todoCompleted = document.querySelector('.todo-right-list'),
+	todoListText = document.querySelector('.todo-left__text'),
+	todoCompletedText = document.querySelector('.todo-right__text'),
 	todoData = getTodoData(key);
 
 let counter = 0;
@@ -20,6 +22,7 @@ let counter = 0;
 const render = function() {
 	todoList.textContent = '';
 	todoCompleted.textContent = '';
+	
 	todoData.forEach(function(item) {
 		const li = document.createElement('li');
 		li.classList.add('todo-left-list__item');
@@ -57,9 +60,29 @@ const render = function() {
 			if (todoData.length === 0) {
 				localStorage.removeItem(key);
 			}
+
 			render();
 		});
 	});
+
+		todoListText.style.display = 'block';
+		todoCompletedText.style.display = 'block';
+
+		if (todoData.length !== 0) {
+			for (let i = 0; i < todoData.length; i++) {
+				if (todoData[i].completed === false) {
+					todoListText.style.display = 'none';
+				} else {
+					todoListText.style.display = 'block';
+				}
+
+				if (todoData[i].completed === true) {
+					todoCompletedText.style.display = 'none';
+				} else {
+					todoCompletedText.style.display = 'block';
+				}
+			}
+		}
 };
 
 todoControl.addEventListener('submit', function(event) {
@@ -67,11 +90,11 @@ todoControl.addEventListener('submit', function(event) {
 	
 	counter++;
 	const newTodo = {
-		value: headerInput.value,
+		value: headerInput.value.trim(),
 		completed: false,
 		id: counter
 	};
-	if (headerInput.value !== '') {
+	if (newTodo.value !== '') {
 		todoData.push(newTodo);
 		updateTodoData(key, todoData);
 	} else {return;}

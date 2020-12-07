@@ -1,4 +1,5 @@
 'use strict';
+
 const key = 'Список задач';
 
 const getTodoData = key => localStorage.getItem(key) ?
@@ -13,6 +14,7 @@ const dateWrap = document.querySelector('.header-calendar'),
 	todoList = document.querySelector('.todo-left-list'),
 	todoCompleted = document.querySelector('.todo-right-list'),
 	todoData = getTodoData(key);
+
 let counter = 0;
 
 const render = function() {
@@ -75,31 +77,15 @@ todoControl.addEventListener('submit', function(event) {
 
 render();
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 function showDate() {
-    let date1 = new Date(),
-		year = date1.getFullYear(),
-		hour = date1.getHours(),
-		minutes = date1.getMinutes(),
-		day = date1.toLocaleString("en", {day: 'numeric'}),
-		month = date1.toLocaleString("en", {month: 'long'}),
-		currentDay = date1.toLocaleString("en", {weekday: 'short'});
-    
+	let date1 = new Date(),
+	year = date1.getFullYear(),
+	hour = date1.getHours(),
+	minutes = date1.getMinutes(),
+	day = date1.toLocaleString("en", {day: 'numeric'}),
+	month = date1.toLocaleString("en", {month: 'long'}),
+	currentDay = date1.toLocaleString("en", {weekday: 'short'});
+	
 	if (hour < 10) {hour = '0' + hour;}
 	if (minutes < 10) {minutes = '0' + minutes;}
 

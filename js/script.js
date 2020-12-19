@@ -2,7 +2,9 @@ document.addEventListener('DOMContentLoaded', () => {
 	'use strict';
 
 	class Todo {
-		constructor(form, input, todoList, todoCompleted, error, todoWrapper, todoListText, todoCompletedText, date) {
+		constructor(form, input, todoList, todoCompleted, error, todoWrapper, todoListText, todoCompletedText, date,
+					usersButtons, authModal, modalOverlay, authForm, modalInputs,logInBtn, singUpBtn,inputName, inputLogin,
+					inputPassword, nameInputGroup, userCardWrapper, loginError) {
 			this.form = document.querySelector(form);
 			this.input = document.querySelector(input);
 			this.todoList = document.querySelector(todoList);
@@ -15,6 +17,22 @@ document.addEventListener('DOMContentLoaded', () => {
 			this.date = document.querySelector(date);
 			this.translateValue = 0;
 			this.scaleValue = 1;
+			this.authModal = document.querySelector(authModal);
+			this.modalOverlay = document.querySelector(modalOverlay);
+			this.authForm = document.querySelector(authForm);
+			this.modalInputs = document.querySelectorAll(modalInputs);
+			this.singUpBtn = document.querySelector(singUpBtn);
+			this.logInBtn = document.querySelector(logInBtn);
+			this.inputName = document.querySelector(inputName);
+			this.inputLogin = document.querySelector(inputLogin);
+			this.inputPassword = document.querySelector(inputPassword);
+			this.nameInputGroup = document.querySelector(nameInputGroup);
+			this.usersButtons = document.querySelector(usersButtons);
+			this.loginError = document.querySelector(loginError);
+			this.userData = {};
+			this.userLogin = '';
+			this.userCardWrapper = document.querySelector(userCardWrapper);
+			this.dateOfReg = '';
 		}
 
 		showDate() {
@@ -25,7 +43,8 @@ document.addEventListener('DOMContentLoaded', () => {
 				currentDay = date1.toLocaleString("en", { weekday: 'short' });
 
 			let hour = date1.getHours(),
-				minutes = date1.getMinutes();
+				minutes = date1.getMinutes(),
+				seconds = date1.getSeconds();
 
 			if (hour < 10) { hour = '0' + hour; }
 			if (minutes < 10) { minutes = '0' + minutes; }
@@ -44,6 +63,8 @@ document.addEventListener('DOMContentLoaded', () => {
 				<p class="calendar-time">${hour} : <span class="word--red">${minutes}</span></p>
 			`;
 
+			this.dateOfReg = `${day} ${month} ${year} year, ${hour}:${minutes}:${seconds}`;
+
 			const dateOutput = () => {
 				this.date.innerHTML = currentDate;
 			};
@@ -51,6 +72,226 @@ document.addEventListener('DOMContentLoaded', () => {
 			dateOutput();
 		}
 
+		getUserData(userName, userLogin, userPassword, date) {
+			const name = userName.split(' '),
+				firstName = name[0],
+				lastName = name[1];
+
+			return {firstName, lastName, userLogin, userPassword, date};
+		}
+
+		createUserCard(user) {
+			const firstName = user.firstName,
+				lastName = user.lastName,
+				date = user.date;
+
+			const card = document.createElement('div');
+			card.classList.add('user-card');
+			card.insertAdjacentHTML("afterbegin", `
+				<p class="user-firstName user-card__text">First name:
+				<span class="user-firstName__value word--red">${firstName}</span></p>
+				<p class="user-lastName user-card__text">Last name:
+            	<span class="user-lastName__value word--red">${lastName}</span></p>
+        		<p class="user-date user-card__text">Date of registration:
+            	<span class="user-date__value word--red">${date}</span></p>
+			`);
+
+			this.userCardWrapper.append(card);
+		}
+
+		addUserCards() {
+			this.userCardWrapper.textContent = '';
+
+			for (let key in localStorage) {
+				if (localStorage.hasOwnProperty(key)) {
+					const user = JSON.parse(localStorage.getItem(key));
+					this.createUserCard(user);
+				}
+
+			}
+		}
+
+		getTodoData(key) {
+			console.log(key);
+			localStorage.getItem(key) ? JSON.parse(localStorage.getItem(key)) : [];
+		}
+
+		updateTodoData(key, user) {
+			localStorage.setItem(key, JSON.stringify(user));
+		}
+
+		createNewUser(userData) {
+			const key = userData.userLogin;
+
+			this.updateTodoData(key, userData);
+			this.addUserCards();
+		}
+
+		checkUser(userLogin, userPassword){
+			for (let key in localStorage) {
+				if (localStorage.hasOwnProperty(key)) {
+					const user = JSON.parse(localStorage.getItem(key));
+					if (userLogin === user.userLogin && userPassword === user.userPassword) {
+						return true;
+					}
+				}
+			}
+			if (this.userLogin === '') {
+				return false;
+			}
+		}
+
+		// Auth modal
+		closeModal() {
+			this.authModal.classList.remove('modal--active');
+			this.modalInputs.forEach(elem => {
+				elem.nextElementSibling.textContent = '';
+				document.querySelector('#name-error').textContent = '';
+				elem.classList.remove('invalid');
+			});
+			this.authForm.reset();
+		}
+
+		toggleModal() {
+			this.usersButtons.addEventListener('click', event => {
+				const target = event.target;
+
+				if (target.matches('.users-button-login')) {
+					this.nameInputGroup.classList.remove('modal-input-group-name--active');
+					this.logInBtn.classList.add('modal-button--active');
+					this.singUpBtn.classList.remove('modal-button--active');
+					this.authModal.classList.add('modal--active');
+
+				} else if (target.matches('.users-button-singup')) {
+					this.nameInputGroup.classList.add('modal-input-group-name--active');
+					this.singUpBtn.classList.add('modal-button--active');
+					this.logInBtn.classList.remove('modal-button--active');
+					this.authModal.classList.add('modal--active');
+				}
+
+				this.modalValidate();
+
+				document.addEventListener("keydown", event => {
+					if (event.key === 'Escape') {
+						this.closeModal();
+					}
+				});
+			});
+
+			this.authModal.addEventListener('click', event => {
+				const target = event.target;
+
+				if (this.modalOverlay.contains(target) || target.closest('.modal-close')) {
+					this.closeModal();
+				}
+			});
+		}
+
+		modalValidate() {
+			let nameValidate = false;
+			let passwordValidate = false;
+			let loginValidate = false;
+
+			const validateInputs = elem => {
+				const userName = this.inputName.value.trim();
+				const nameRegExp = /^[a-zA-z]+\s[a-zA-z]+$/;
+
+
+				if (elem.name === 'user-name') {
+					if (elem.value === '') {
+						document.querySelector('#name-error').textContent = '';
+						elem.nextElementSibling.textContent = 'Field is required!';
+						elem.classList.add('invalid');
+						nameValidate = false;
+					} else {
+						elem.nextElementSibling.textContent = '';
+						if (nameRegExp.test(userName)) {
+							document.querySelector('#name-error').textContent = '';
+							elem.classList.remove('invalid');
+							nameValidate = true;
+						} else {
+							elem.nextElementSibling.textContent = '';
+							elem.classList.add('invalid');
+							nameValidate = false;
+							document.querySelector('#name-error').textContent = 'Format of name: John Wick';
+						}
+					}
+				}
+
+				if (elem.name === 'user-login') {
+					if (elem.value === '') {
+						this.loginError.textContent = '';
+						elem.nextElementSibling.textContent = 'Field is required!';
+						elem.classList.add('invalid');
+						loginValidate = false;
+					} else {
+						elem.nextElementSibling.textContent = '';
+						elem.classList.remove('invalid');
+						loginValidate = true;
+					}
+				}
+
+				if (elem.name === 'user-password') {
+					if (elem.value === '') {
+						this.loginError.textContent = '';
+						elem.nextElementSibling.textContent = 'Field is required!';
+						elem.classList.add('invalid');
+						passwordValidate = false;
+					} else {
+						elem.nextElementSibling.textContent = '';
+						elem.classList.remove('invalid');
+						passwordValidate = true;
+					}
+				}
+			};
+			this.modalInputs.forEach(input => {
+				input.addEventListener('blur', () => {
+					validateInputs(input);
+				});
+			});
+
+			this.authForm.addEventListener('submit', event => {
+				event.preventDefault();
+
+				this.modalInputs.forEach(input => {
+					validateInputs(input);
+				});
+				if (!this.nameInputGroup.classList.contains('modal-input-group-name--active')) {
+					nameValidate = true;
+				}
+				if (loginValidate && nameValidate && passwordValidate) {
+					const userName = this.inputName.value,
+						userPassword = this.inputPassword.value,
+						userLogin = this.inputLogin.value;
+
+					this.userData = this.getUserData(userName, userLogin, userPassword, this.dateOfReg);
+
+					for (let i = 0; i < this.authForm.length; i++) {
+						if (this.authForm[i].matches('.modal-button--active')) {
+
+							if (this.authForm[i].matches('.button__sing-up')) {
+								this.createNewUser(this.userData);
+								this.closeModal();
+							} else {
+								const verifiedUser = this.checkUser(userLogin, userPassword);
+								console.log(verifiedUser);
+								if (verifiedUser) {
+									this.loginError.textContent = '';
+									this.userLogin = userLogin;
+								} else {
+									this.loginError.textContent = 'incorrect login or password please try again';
+								}
+								// this.closeModal();
+							}
+						}
+					}
+				}
+
+			});
+
+		}
+
+		// Todo list
 		checkEmptyBlock() {
 			if (this.todoList.childNodes.length === 0) {
 				this.listText.style.display = 'block';
@@ -68,6 +309,7 @@ document.addEventListener('DOMContentLoaded', () => {
 			this.todoData.forEach(this.createItem, this);
 			this.addToStorage();
 			this.checkEmptyBlock();
+			this.addUserCards();
 		}
 
 		addToStorage() {
@@ -288,224 +530,26 @@ document.addEventListener('DOMContentLoaded', () => {
 		}
 
 		init() {
+			this.toggleModal();
 			this.form.addEventListener('submit', this.addTodo.bind(this));
 			this.handler();
 			this.render();
 			this.showDate();
-
 			setInterval(() => {
 				this.showDate();
-			}, 60000);
+			}, 1000);
+
 		}
 	}
 
 	const todo = new Todo('.header-form', '.header-form__input',
 		'.todo-left-list', '.todo-right-list', '.todoError',
 		'.todo__wrapper', '.todo-left__text', '.todo-right__text',
-		'.header-calendar');
+		'.header-calendar', '.users-buttons', '.modal', '.modal-overlay',
+		'.modal-form', '.modal__input', '.button__log-in', '.button__sing-up',
+		'.input-name', '.input-login', '.input-password',
+		'.modal-input-group-name',  '.users-cards-wrapper', '.login-error');
 
 	todo.init();
-
-		 const userTitleName = document.querySelector('.word--red'),
-			usersButtons = document.querySelector('.users-buttons'),
-			loginBtn = document.querySelector('.users-button-login'),
-			singUpBtn = document.querySelector('.users-button-singup'),
-			userCard = document.querySelector('.user-card'),
-			nameInputGroup = document.querySelector('.modal-input-group-name'),
-			userFirstName = document.querySelector('.user-firstName__value'),
-			userLastName = document.querySelector('.user-lastName__value'),
-			regDate = document.querySelector('.user-date__value'),
-			modal = document.querySelector('.modal'),
-			modalOverlay = document.querySelector('.modal-overlay'),
-			modalClose = document.querySelector('.modal-close'),
-			modalActive = document.querySelector('.modal--active'),
-			modalLoginBtn = document.querySelector('.button__log-in'),
-			modalSingUpBtn = document.querySelector('.button__sing-up'),
-			modalBtnActive = document.querySelector('.modal-button--active'),
-			modalForm = document.querySelector('.modal-form'),
-			inputName = document.querySelector('.input-name'),
-			inputLogin = document.querySelector('.input-login'),
-			inputPassword = document.querySelector('.input-password'),
-			modalInputGroups = document.querySelectorAll('.modal-input-group'),
-			modalInputs = document.querySelectorAll('.modal__input');
-
-	let userData = {};
-
-	// Get user name, login, password
-	const getUserData = (userName, userLogin, userPassword) => {
-		const name = userName.split(' '),
-			firstName = name[0],
-			lastName = name[1];
-
-		return {firstName, lastName, userLogin, userPassword};
-	};
-
-	// // Local Storage
-	const getTodoData = key => localStorage.getItem(key) ?
-		JSON.parse(localStorage.getItem(key)) : [];
-
-	const updateTodoData = (key, user) =>
-		localStorage.setItem(key, JSON.stringify(user));
-
-	const createNewUser = (userData) => {
-		const key = userData.userLogin;
-
-		for(let key in localStorage) {
-			if (localStorage.hasOwnProperty(key)) {
-				console.dir(`${key}: ${localStorage.getItem(key)}`);
-				console.log(JSON.parse(localStorage.getItem(key)));
-			}
-
-		}
-		updateTodoData(key, userData);
-	};
-
-	const userLogIn = (userLogin) => {
-		const user = getTodoData(userLogin);
-
-	};
-	// Modal
-	const closeModal = () => {
-		modal.classList.remove('modal--active');
-		modalInputs.forEach(elem => {
-			elem.nextElementSibling.textContent = '';
-			document.querySelector('#name-error').textContent = '';
-			elem.classList.remove('invalid');
-		});
-		modalForm.reset();
-	};
-
-	const toggleModal = () => {
-		usersButtons.addEventListener('click', event => {
-			const target = event.target;
-
-			if (target.matches('.users-button-login')) {
-				nameInputGroup.classList.remove('modal-input-group-name--active');
-				modalLoginBtn.classList.add('modal-button--active');
-				modalSingUpBtn.classList.remove('modal-button--active');
-				modal.classList.add('modal--active');
-
-			} else if (target.matches('.users-button-singup')) {
-				nameInputGroup.classList.add('modal-input-group-name--active');
-				modalSingUpBtn.classList.add('modal-button--active');
-				modalLoginBtn.classList.remove('modal-button--active');
-				modal.classList.add('modal--active');
-			}
-
-			modalValidate();
-
-			document.addEventListener("keydown", event => {
-				if (event.key === 'Escape') {
-					closeModal();
-				}
-			});
-		});
-
-		modal.addEventListener('click', event => {
-			const target = event.target;
-
-			if (modalOverlay.contains(target) || target.closest('.modal-close')) {
-				closeModal();
-			}
-		});
-	};
-
-	toggleModal();
-
-
-	// Modal Validate
-	const modalValidate = () => {
-		let nameValidate = false;
-		let passwordValidate = false;
-		let loginValidate = false;
-
-		const validateInputs = elem => {
-			const userName = inputName.value.trim();
-			const nameRegExp = /^[a-zA-z]+\s[a-zA-z]+$/;
-
-
-			if (elem.name === 'user-name') {
-				if (elem.value === '') {
-					document.querySelector('#name-error').textContent = '';
-					elem.nextElementSibling.textContent = 'Field is required!';
-					elem.classList.add('invalid');
-					nameValidate = false;
-				} else {
-					elem.nextElementSibling.textContent = '';
-					if (nameRegExp.test(userName)) {
-						document.querySelector('#name-error').textContent = '';
-						elem.classList.remove('invalid');
-						nameValidate = true;
-					} else {
-						elem.nextElementSibling.textContent = '';
-						elem.classList.add('invalid');
-						nameValidate = false;
-						document.querySelector('#name-error').textContent = 'Format of name: John Wick';
-					}
-				}
-			}
-
-			if (elem.name === 'user-login') {
-				if (elem.value === '') {
-					elem.nextElementSibling.textContent = 'Field is required!';
-					elem.classList.add('invalid');
-					loginValidate = false;
-				} else {
-					elem.nextElementSibling.textContent = '';
-					elem.classList.remove('invalid');
-					loginValidate = true;
-				}
-			}
-
-			if (elem.name === 'user-password') {
-				if (elem.value === '') {
-					elem.nextElementSibling.textContent = 'Field is required!';
-					elem.classList.add('invalid');
-					passwordValidate = false;
-				} else {
-					elem.nextElementSibling.textContent = '';
-					elem.classList.remove('invalid');
-					passwordValidate = true;
-				}
-			}
-		};
-		modalInputs.forEach(input => {
-			input.addEventListener('blur', () => {
-				validateInputs(input);
-			});
-		});
-
-		modalForm.addEventListener('submit', event => {
-			event.preventDefault();
-
-			modalInputs.forEach(input => {
-				validateInputs(input);
-			});
-			if (!nameInputGroup.classList.contains('modal-input-group-name--active')) {
-				nameValidate = true;
-			}
-			if (loginValidate && nameValidate && passwordValidate) {
-				const userName = inputName.value,
-					userPassword = inputPassword.value,
-					userLogin = inputLogin.value;
-
-				userData = getUserData(userName, userLogin, userPassword);
-
-				for (let i = 0; i < modalForm.length; i++) {
-					if (modalForm[i].matches('.modal-button--active')) {
-						if (modalForm[i].matches('.button__sing-up')) {
-							createNewUser(userData);
-							closeModal();
-						} else {
-							userLogIn(userLogin);
-							closeModal();
-						}
-					}
-				}
-			}
-
-		});
-
-	};
 
 });

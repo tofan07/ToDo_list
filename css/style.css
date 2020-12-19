@@ -102,16 +102,20 @@ img {
 }
 
 .button--red {
-  background-color: #ec1f44;
+  background-color: #EC1F46;
+
 }
+
 .button--blue {
   background-color: #0A223D;
 }
+
 .button--active {
   opacity: 1;
 }
+
 .button--active:hover {
-  background-color: #EC1F46;
+  background-color: #ec1f44da;
 }
 
 .header-form__button {
@@ -125,6 +129,7 @@ img {
   border-top-right-radius: 10px;
   border-bottom-right-radius: 10px;
 }
+
 .header-calendar {
   flex-basis: 40%;
   font-family: sans-serif;
@@ -151,6 +156,7 @@ img {
   width: 90%;
   margin: 0 auto;
 }
+
 .todo {
   display: none;
 }
@@ -158,6 +164,7 @@ img {
 .todo--active {
   display: block;
 }
+
 .todo__title {
   text-align: center;
   text-transform: uppercase;
@@ -213,43 +220,66 @@ img {
   position: relative;
   width: 100%;
   border-radius: 10px;
-  padding: 15px 90px 15px 20px;
-  margin-bottom: 10px;
+  padding: 15px 130px 15px 20px;
+  margin-bottom: 20px;
   background-color: #0A223D;
   color: #ffffff;
   font-size: 1.2rem;
 }
 
-.checked,
-.delete {
+.todo-item-link {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
   opacity: 0.9;
 }
 
-.checked {
+.edit-link {
+  background-color: rgb(195, 195, 195);
+  border-radius: 3px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.edit {
+  width: 25px;
+  height: 25px;
+}
+
+.checked,
+.delete,
+.edit {
+  opacity: 0.6;
+}
+
+.edit-link {
+  width: 30px;
+  height: 30px;
+  right: 91px;
+}
+
+.checked-link {
   right: 11px;
   width: 30px;
   height: 30px;
 }
 
-.delete {
+.delete-link {
   right: 51px;
   width: 30px;
   height: 30px;
 }
 
 .checked:hover,
-.delete:hover {
+.delete:hover,
+.edit:hover {
   opacity: 1;
 }
+
 .users {
   padding: 30px 0;
-  display: none;
 }
-
-
 
 .users-content {
   display: flex;
@@ -288,9 +318,11 @@ img {
 .users-button {
   width: 220px;
 }
+
 .users-button:first-child {
   margin-right: 20px;
 }
+
 .users-cards-wrapper {
   margin: auto;
   display: none;
@@ -301,6 +333,7 @@ img {
 .users-cards-wrapper--active {
   display: flex;
 }
+
 .user-card {
   display: flex;
   flex-basis: 32%;
@@ -312,18 +345,21 @@ img {
   padding: 20px;
   border-radius: 10px;
   font-size: 1.1rem;
-  margin-bottom: 35px;
+  margin-bottom: 20px;
   margin-left: 5px;
   margin-right: 5px;
 }
+
 .user-card__text:last-child {
   flex-basis: 100%;
 }
+
 .user-card__text:not(:last-child) {
   margin: 0 0 10px 0;
   flex-basis: 40%;
   max-width: 225px;
 }
+
 p {
   margin: 0;
 }
@@ -334,6 +370,7 @@ p {
   font-size: 2rem;
   margin: 0 0 30px 0;
 }
+
 .modal {
   position: fixed;
   left: 0;
@@ -344,9 +381,11 @@ p {
   justify-content: center;
   align-items: center;
 }
+
 .modal--active {
   display: flex;
 }
+
 .modal-overlay {
   position: absolute;
   width: 100%;
@@ -372,12 +411,15 @@ p {
   padding: 35px 40px;
   box-shadow: 10px 10px 20px 5px rgba(252, 252, 252, 0.46);
 }
+
 * {
   outline: none;
 }
+
 .modal__label {
   margin-bottom: 10px;
 }
+
 .modal__input {
   padding: 13px 15px;
   border-radius: 4px;
@@ -387,16 +429,19 @@ p {
   border-bottom: 2px solid #EC1F46;
   color: #EC1F46;
 }
+
 .modal-form {
   width: 100%;
   display: flex;
   flex-direction: column;
 }
+
 .close {
   width: 20px;
   height: 20px;
 
 }
+
 .modal-close {
   position: absolute;
   right: 20px;
@@ -405,29 +450,40 @@ p {
   fill: #ec1f44d4;
 
 }
+
 .modal-close:hover {
   fill: #EC1F46;
 }
+
 .modal-input-group {
   position: relative;
   display: flex;
   flex-direction: column;
   margin-bottom: 20px;
 }
+
 .modal-input-group-name {
   display: none;
 }
+
 .modal-input-group-name--active {
   display: flex;
 }
-
+.login-error,
 .required-error {
   position: absolute;
-  left: 0;
-  bottom: -17px;
+  left: 5px;
   font-size: 0.8rem;
   color: #EC1F46;
 }
+.required-error {
+  bottom: -17px;
+}
+
+.login-error {
+  bottom: -25px;
+}
+
 #name-error {
   position: absolute;
   left: 0;
@@ -435,6 +491,7 @@ p {
   font-size: 0.8rem;
   color: #EC1F46;
 }
+
 .modal-form-button {
   margin-top: 20px;
   background-color: #ec1f44d4;
@@ -442,9 +499,11 @@ p {
   align-self: flex-end;
   display: none;
 }
+
 .modal-form-button:hover {
   background-color: #EC1F46;
 }
+
 .modal-button--active {
   display: inline-block;
 }
@@ -469,29 +528,35 @@ p {
   .header-form__wrapper {
     flex-basis: 40%;
   }
+
   .user-card__text:not(:last-child) {
     margin: 0 0 10px 0;
     width: 50%;
     display: flex;
     justify-content: center;
   }
+
   .user-card__text:last-child {
     display: flex;
     justify-content: center;
     flex-wrap: wrap;
   }
+
   .user-firstName__value,
-  .user-lastName__value{
+  .user-lastName__value {
     flex-shrink: 0;
     margin-left: 10px;
   }
+
   .user-date__value {
     flex-shrink: 0;
     margin-left: 10px;
   }
+
   .users-cards-wrapper {
     justify-content: center;
   }
+
   .user-card {
     flex-basis: auto;
     width: 100%;
@@ -499,6 +564,7 @@ p {
     justify-content: center;
   }
 }
+
 @media screen and (max-width: 900px) {
   .header__wrapper {
     flex-wrap: wrap;
@@ -566,22 +632,27 @@ p {
   .header-calendar {
     font-size: 1.2rem;
   }
+
   .user-card {
     justify-content: flex-start;
   }
+
   .users-buttons {
     display: flex;
     flex-direction: column;
     align-items: center;
 
   }
+
   .users-button {
     width: 100%;
   }
+
   .users-button:first-child {
     margin-right: 0;
-    margin-bottom: 20px ;
+    margin-bottom: 20px;
   }
+
   .users-content {
     padding: 50px 30px;
   }
@@ -590,10 +661,12 @@ p {
     flex-basis: 100%;
     justify-content: flex-start;
   }
+
   .user-card__text:last-child {
     justify-content: flex-start;
     margin-right: 10px;
   }
+
   .user-date__value {
     margin-left: 0;
     flex-basis: 100%;

@@ -18,8 +18,9 @@
       <div class="header-form__wrapper">
         <h1 class="header__title">adding new <span class="header-title__word">tasks</span></h1>
         <form action="#" class="header-form">
-          <input type="text" placeholder="write a task" class="header-form__input">
-          <button class="header-form__button">Add</button>
+          <input type="text" id="newTodo" placeholder="write a task" class="header-form__input">
+          <label for="newTodo" class="todoError header-form__error required-error"></label>
+          <button type="submit" class="button header-form__button button--red button--active">Add</button>
         </form>
       </div>
       <!-- /.header-form__wrapper -->
@@ -30,7 +31,40 @@
   </header>
 
   <main>
-    <section class="todo section-todo">
+    <section class="users">
+      <div class="container">
+        <div class="users-content">
+          <div class="users-header">
+            <h2 class="users__title">Hi, <span class="word--red">friend</span>!</h2>
+            <p class="users__text">To start using the application, you need to be <span class="word--red">authorized</span></p>
+          </div>
+          <!-- /.users-header-->
+          <div class="users-buttons">
+            <button class="button users-button users-button-login button--blue">Log in</button>
+            <button class="button users-button users-button-singup button--red">Sing up</button>
+          </div>
+          <!-- /.users-button -->
+        </div>
+        <!-- /.users-content -->
+        <h3 class="users-subtitle">Registered users</h3>
+        <div class="registered-users users-cards-wrapper--active users-cards-wrapper">
+          <div class="user-card">
+            <p class="user-firstName user-card__text">First name:
+              <span class="user-firstName__value word--red">Anton</span></p>
+            <p class="user-lastName user-card__text">Last name:
+              <span class="user-lastName__value word--red">Ivanov</span></p>
+            <p class="user-date user-card__text">Date of registration:
+              <span class="user-date__value word--red">20 июня 2020 г., 19:58:47</span></p>
+          </div>
+          <!-- /.user-card-->
+        </div>
+        <!-- /.users-cards-wrapper -->
+      </div>
+      <!-- /.container -->
+    </section>
+    <!-- /.users -->
+
+    <section class="todo section-todo todo--active">
       <div class="container">
         <h1 class="todo__title">Tasks list</h1>
         <div class="todo__wrapper">
@@ -52,6 +86,43 @@
       <!-- /.container -->
     </section>
   </main>
+  <div class="modal">
+    <div class="modal-overlay"></div>
+    <!-- /.modal-overlay -->
+    <div class="modal-dialog">
+      <div class="modal-close">
+        <svg class="icon close">
+          <use xlink:href="images/sprite.svg#close"></use>
+        </svg>
+      </div>
+      <form action="#" class="modal-form">
+        <div class="modal-input-group modal-input-group-name modal-input-group-name--active">
+          <label for="user-name" class="modal__label">Name</label>
+          <input type="text" id="user-name" name="user-name"  placeholder="Anton Ivanov"
+                 class="modal__input input-name">
+          <label for="user-name" class="required-error name-error"></label>
+          <label for="user-name" class="required-error" id="name-error"></label>
+        </div>
+        <div class="modal-input-group">
+          <label for="user-login" class="modal__label">Login</label>
+          <input type="text" id="user-login" class="modal__input input-login" name="user-login"
+                 placeholder="Enter your login">
+          <label for="user-login" class="required-error"></label>
+        </div>
+        <div class="modal-input-group">
+          <label for="user-password" class="modal__label">Password</label>
+          <input type="text" id="user-password" class="modal__input input-password" name="user-password"
+                 placeholder="Enter your password">
+          <label for="user-password" class="required-error"></label>
+        </div>
+        <button type="submit" class="modal-form-button button__log-in button button--red modal-button--active">Log
+          in</button>
+        <button type="submit" class="modal-form-button button__sing-up button button--red">Sing up</button>
+      </form>
+    </div>
+    <!-- /.modal-dialog -->
+  </div>
+  <!-- /.modal -->
 <script src="./js/script.js"></script>
 </body>
 </html>

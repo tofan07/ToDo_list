@@ -554,6 +554,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 		handler() {
 			this.todoWrapper.addEventListener('click', event => {
+				event.preventDefault();
 				const target = event.target;
 				const todoElem = target.closest('li');
 				if (todoElem) {

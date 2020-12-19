@@ -3,8 +3,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
 	class Todo {
 		constructor(form, input, todoList, todoCompleted, error, todoWrapper, todoListText, todoCompletedText, date,
-					usersButtons, authModal, modalOverlay, authForm, modalInputs,logInBtn, singUpBtn,inputName, inputLogin,
-					inputPassword, nameInputGroup, userCardWrapper, loginError) {
+					usersButtons, authModal, modalOverlay, authForm, modalInputs,logInBtn, singUpBtn, inputName, inputLogin,
+					inputPassword, nameInputGroup, userCardWrapper, loginError, greeting, loginText) {
 			this.form = document.querySelector(form);
 			this.input = document.querySelector(input);
 			this.todoList = document.querySelector(todoList);
@@ -33,6 +33,8 @@ document.addEventListener('DOMContentLoaded', () => {
 			this.userLogin = '';
 			this.userCardWrapper = document.querySelector(userCardWrapper);
 			this.dateOfReg = '';
+			this.greeting = document.querySelector(greeting);
+			this.loginText = document.querySelector(loginText);
 		}
 
 		showDate() {
@@ -111,9 +113,16 @@ document.addEventListener('DOMContentLoaded', () => {
 			}
 		}
 
-		getTodoData(key) {
-			console.log(key);
-			localStorage.getItem(key) ? JSON.parse(localStorage.getItem(key)) : [];
+		getTodoData(userLogin) {
+			// localStorage.getItem(key) ? JSON.parse(localStorage.getItem(key)) : [];
+			for (let key in localStorage) {
+				if (localStorage.hasOwnProperty(key)) {
+					const user = JSON.parse(localStorage.getItem(key));
+					if (userLogin === user.userLogin) {
+						return user.firstName;
+					}
+				}
+			}
 		}
 
 		updateTodoData(key, user) {
@@ -274,14 +283,17 @@ document.addEventListener('DOMContentLoaded', () => {
 								this.closeModal();
 							} else {
 								const verifiedUser = this.checkUser(userLogin, userPassword);
-								console.log(verifiedUser);
 								if (verifiedUser) {
+									const name = this.getTodoData(userLogin);
 									this.loginError.textContent = '';
+									this.greeting.textContent = name;
 									this.userLogin = userLogin;
+									this.loginText.style.display = 'none';
+
 								} else {
 									this.loginError.textContent = 'incorrect login or password please try again';
 								}
-								// this.closeModal();
+								this.closeModal();
 							}
 						}
 					}
@@ -548,7 +560,8 @@ document.addEventListener('DOMContentLoaded', () => {
 		'.header-calendar', '.users-buttons', '.modal', '.modal-overlay',
 		'.modal-form', '.modal__input', '.button__log-in', '.button__sing-up',
 		'.input-name', '.input-login', '.input-password',
-		'.modal-input-group-name',  '.users-cards-wrapper', '.login-error');
+		'.modal-input-group-name',  '.users-cards-wrapper', '.login-error',
+		'.user-name', '.users__text');
 
 	todo.init();
 

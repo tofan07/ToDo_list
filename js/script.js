@@ -4,7 +4,7 @@ document.addEventListener('DOMContentLoaded', () => {
 	class Todo {
 		constructor(form, input, todoList, todoCompleted, error, todoWrapper, todoListText, todoCompletedText, date,
 					usersButtons, authModal, modalOverlay, authForm, modalInputs,logInBtn, singUpBtn, inputName, inputLogin,
-					inputPassword, nameInputGroup, userCardWrapper, loginError, greeting, loginText) {
+					inputPassword, nameInputGroup, userCardWrapper, loginError, greeting, loginText, todoSection) {
 			this.form = document.querySelector(form);
 			this.input = document.querySelector(input);
 			this.todoList = document.querySelector(todoList);
@@ -35,6 +35,7 @@ document.addEventListener('DOMContentLoaded', () => {
 			this.dateOfReg = '';
 			this.greeting = document.querySelector(greeting);
 			this.loginText = document.querySelector(loginText);
+			this.todoSection = document.querySelector(todoSection);
 		}
 
 		showDate() {
@@ -105,7 +106,7 @@ document.addEventListener('DOMContentLoaded', () => {
 			this.userCardWrapper.textContent = '';
 
 			for (let key in localStorage) {
-				if (localStorage.hasOwnProperty(key)) {
+				if (localStorage.hasOwnProperty(key) && key !== 'toDoList') {
 					const user = JSON.parse(localStorage.getItem(key));
 					this.createUserCard(user);
 				}
@@ -289,11 +290,11 @@ document.addEventListener('DOMContentLoaded', () => {
 									this.greeting.textContent = name;
 									this.userLogin = userLogin;
 									this.loginText.style.display = 'none';
-
+									this.todoSection.classList.add('todo--active');
+									this.closeModal();
 								} else {
 									this.loginError.textContent = 'incorrect login or password please try again';
 								}
-								this.closeModal();
 							}
 						}
 					}
@@ -561,7 +562,7 @@ document.addEventListener('DOMContentLoaded', () => {
 		'.modal-form', '.modal__input', '.button__log-in', '.button__sing-up',
 		'.input-name', '.input-login', '.input-password',
 		'.modal-input-group-name',  '.users-cards-wrapper', '.login-error',
-		'.user-name', '.users__text');
+		'.user-name', '.users__text', '.section-todo');
 
 	todo.init();
 

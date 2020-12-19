@@ -326,7 +326,7 @@ img {
 .users-cards-wrapper {
   margin: auto;
   display: none;
-  justify-content: space-between;
+  justify-content: center;
   flex-wrap: wrap;
 }
 
@@ -473,7 +473,7 @@ p {
 .required-error {
   position: absolute;
   left: 5px;
-  font-size: 0.8rem;
+  font-size: 0.9rem;
   color: #EC1F46;
 }
 .required-error {

@@ -157,6 +157,7 @@ document.addEventListener('DOMContentLoaded', () => {
 				return false;
 			}
 		}
+
 		logIn(userLogin) {
 			this.loginText.style.display = 'none';
 			this.todoSection.classList.add('todo--active');
@@ -199,7 +200,6 @@ document.addEventListener('DOMContentLoaded', () => {
 		toggleModal() {
 			this.usersButtons.addEventListener('click', event => {
 				const target = event.target;
-				this.
 
 				if (target.matches('.users-button-login')) {
 					this.nameInputGroup.classList.remove('modal-input-group-name--active');

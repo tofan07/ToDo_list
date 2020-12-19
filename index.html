@@ -18,9 +18,9 @@
     <div class="header-form__wrapper">
       <h1 class="header__title">adding new <span class="header-title__word">tasks</span></h1>
       <form action="#" class="header-form">
-        <input type="text" id="newTodo" placeholder="write a task" class="header-form__input">
+        <input type="text" disabled="true" id="newTodo" placeholder="write a task" class="header-form__input">
         <label for="newTodo" class="todoError header-form__error required-error"></label>
-        <button type="submit" class="button header-form__button button--red button--active">Add</button>
+        <button type="submit" disabled="true" class="button header-form__button button--red">Add</button>
       </form>
     </div>
     <!-- /.header-form__wrapper -->
@@ -40,8 +40,9 @@
         </div>
         <!-- /.users-header-->
         <div class="users-buttons">
-          <button class="button users-button users-button-login button--blue">Log in</button>
-          <button class="button users-button users-button-singup button--red">Sing up</button>
+          <button class="button users-button users-button-login button--blue users-button--active">Log in</button>
+          <button class="button users-button users-button-singup button--red users-button--active">Sing up</button>
+          <button class="button users-button users-button-logout">Log out</button>
         </div>
         <!-- /.users-button -->
       </div>

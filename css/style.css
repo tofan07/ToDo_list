@@ -111,7 +111,9 @@ img {
 }
 
 .button--active {
-  opacity: 1;
+  background-color: #EC1F46;
+  opacity: 1 !important;
+  cursor: pointer !important;
 }
 
 .button--active:hover {
@@ -128,6 +130,8 @@ img {
   border-radius: 0;
   border-top-right-radius: 10px;
   border-bottom-right-radius: 10px;
+  opacity: 0.5;
+  cursor: default;
 }
 
 .header-calendar {
@@ -477,9 +481,30 @@ p {
   color: #EC1F46;
 }
 .required-error {
-  bottom: -17px;
+  bottom: -20px;
+}
+.users-button-logout {
+  display: none;
+  border: 2px solid #0A223D;
+  color: #0A223D;
+
 }
 
+.users-button--active {
+  display: inline-block !important;
+}
+
+.users-button-login,
+.users-button-singup {
+  display: none;
+}
+.users-button-logout:hover {
+  background-color: #0A223D;
+  color: white;
+}
+.logout--active {
+  display: inline-block;
+}
 .login-error {
   bottom: -25px;
 }

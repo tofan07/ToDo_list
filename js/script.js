@@ -4,7 +4,8 @@ document.addEventListener('DOMContentLoaded', () => {
 	class Todo {
 		constructor(form, input, todoList, todoCompleted, error, todoWrapper, todoListText, todoCompletedText, date,
 					usersButtons, authModal, modalOverlay, authForm, modalInputs,logInBtn, singUpBtn, inputName, inputLogin,
-					inputPassword, nameInputGroup, userCardWrapper, loginError, greeting, loginText, todoSection) {
+					inputPassword, nameInputGroup, userCardWrapper, loginError, greeting, loginText, todoSection, newTodoInput,
+					headerButton, logOutButton, usersLoginBtn, usersSingUpBtn) {
 			this.form = document.querySelector(form);
 			this.input = document.querySelector(input);
 			this.todoList = document.querySelector(todoList);
@@ -36,6 +37,12 @@ document.addEventListener('DOMContentLoaded', () => {
 			this.greeting = document.querySelector(greeting);
 			this.loginText = document.querySelector(loginText);
 			this.todoSection = document.querySelector(todoSection);
+			this.newTodoInput = document.querySelector(newTodoInput);
+			this.headerButton = document.querySelector(headerButton);
+			this.logOutButton = document.querySelector(logOutButton);
+			this.usersLoginBtn = document.querySelector(usersLoginBtn);
+			this.usersSingUpBtn = document.querySelector(usersSingUpBtn);
+
 		}
 
 		showDate() {
@@ -150,6 +157,33 @@ document.addEventListener('DOMContentLoaded', () => {
 				return false;
 			}
 		}
+		logIn(userLogin) {
+			this.loginText.style.display = 'none';
+			this.todoSection.classList.add('todo--active');
+			this.newTodoInput.removeAttribute('disabled');
+			this.headerButton.classList.add('button--active');
+			this.headerButton.removeAttribute('disabled');
+
+			this.greeting.textContent = this.getTodoData(userLogin);
+			this.userLogin = userLogin;
+			this.logOutButton.classList.add('logout--active');
+			this.logOutButton.addEventListener('click', this.logOut.bind(this));
+			this.usersSingUpBtn.classList.remove('users-button--active');
+			this.usersLoginBtn.classList.remove('users-button--active');
+
+		}
+
+		logOut() {
+			this.loginText.style.display = 'block';
+			this.todoSection.classList.remove('todo--active');
+			this.newTodoInput.setAttribute('disabled', 'true');
+			this.headerButton.classList.remove('button--active');
+			this.headerButton.setAttribute('disabled', 'true');
+			this.greeting.textContent = 'Friend';
+			this.logOutButton.classList.remove('logout--active');
+			this.usersSingUpBtn.classList.add('users-button--active');
+			this.usersLoginBtn.classList.add('users-button--active');
+		}
 
 		// Auth modal
 		closeModal() {
@@ -165,6 +199,7 @@ document.addEventListener('DOMContentLoaded', () => {
 		toggleModal() {
 			this.usersButtons.addEventListener('click', event => {
 				const target = event.target;
+				this.
 
 				if (target.matches('.users-button-login')) {
 					this.nameInputGroup.classList.remove('modal-input-group-name--active');
@@ -285,12 +320,8 @@ document.addEventListener('DOMContentLoaded', () => {
 							} else {
 								const verifiedUser = this.checkUser(userLogin, userPassword);
 								if (verifiedUser) {
-									const name = this.getTodoData(userLogin);
 									this.loginError.textContent = '';
-									this.greeting.textContent = name;
-									this.userLogin = userLogin;
-									this.loginText.style.display = 'none';
-									this.todoSection.classList.add('todo--active');
+									this.logIn(userLogin);
 									this.closeModal();
 								} else {
 									this.loginError.textContent = 'incorrect login or password please try again';
@@ -562,7 +593,9 @@ document.addEventListener('DOMContentLoaded', () => {
 		'.modal-form', '.modal__input', '.button__log-in', '.button__sing-up',
 		'.input-name', '.input-login', '.input-password',
 		'.modal-input-group-name',  '.users-cards-wrapper', '.login-error',
-		'.user-name', '.users__text', '.section-todo');
+		'.user-name', '.users__text', '.section-todo', '#newTodo',
+		'.header-form__button', '.users-button-logout', '.users-button-login',
+		'.users-button-singup');
 
 	todo.init();
 
